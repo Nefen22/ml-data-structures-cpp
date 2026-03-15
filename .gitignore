@@ -1,0 +1,9 @@
+.vs/
+program
+*.zip
+*.db
+*.db-shm
+*.db-wal
+*.vsidx
+*.opendb
+*.bin

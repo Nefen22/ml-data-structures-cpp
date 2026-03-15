@@ -37,7 +37,7 @@ void xlistDemo2(){
     XArrayList<Point> alist;
     alist.add(Point(23.2f, 25.4f));
     alist.add(Point(24.6f, 23.1f));  
-    alist.println();
+    alist.println(Point::point2str);
 }
 
 void xlistDemo3(){

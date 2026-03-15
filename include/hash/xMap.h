@@ -218,7 +218,7 @@ xMap<K,V>& xMap<K,V>::operator=(const xMap<K,V>& map){
 
 template<class K, class V>
 xMap<K,V>::~xMap(){
-    r//YOUR CODE IS HERE
+    //YOUR CODE IS HERE
 }
 
 //////////////////////////////////////////////////////////////////////
