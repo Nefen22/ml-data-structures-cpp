@@ -2,7 +2,7 @@
 
 A C++ implementation of core data structures and their application to a neural network pipeline, built as part of the **Data Structures & Algorithms** course at HCMUT (2024).
 
-The project explores how fundamental data structures serve as building blocks for a basic MLP (Multi-Layer Perceptron) training pipeline.
+Implemented a Multi-Layer Perceptron (MLP) training pipeline from scratch in C++, including custom data structures, forward/backward propagation, and dataset handling.
 
 ---
 
@@ -97,3 +97,107 @@ Trained and evaluated on 2-class and 3-class classification tasks. Model checkpo
 ├── Makefile
 └── compilation-command.sh
 ```
+
+## 📊 Dataset
+
+The project includes synthetic datasets for classification tasks.
+
+You can generate new datasets using:
+
+```bash
+python gendata.py
+```
+
+This will create datasets under:
+
+```
+datasets/
+├── 2c-classification/
+│   ├── 2c_train.npy
+│   ├── 2c_valid.npy
+│   └── 2c_test.npy
+├── 3c-classification/
+│   ├── 3c_train.npy
+│   ├── 3c_valid.npy
+│   └── 3c_test.npy
+```
+
+Each sample consists of:
+
+* 2 input features `(x, y)`
+* 1 label (class index)
+
+---
+
+## ▶️ Entry Point
+
+The main entry point is:
+
+```
+src/program.cpp
+```
+
+This file:
+
+* Loads datasets via `DSFactory`
+* Builds the MLP model
+* Trains the model
+* Evaluates performance on validation/test sets
+* Saves trained models to `models/`
+
+---
+
+## ⚡ Build Optimization
+
+The project supports parallel compilation using `make`.
+
+```bash
+make -j$(nproc)
+```
+
+This enables multi-core compilation and significantly reduces build time for large projects.
+
+---
+
+## 📈 Example Training Output
+
+```
+Start the training ...
+Epoch 10: loss ~0.8 | acc ~0.88
+Epoch 30: loss ~0.3 | acc ~0.95
+Epoch 40+: acc ~0.96
+
+Evaluation result:
+{ accuracy ~0.96 }
+```
+
+---
+
+## 🧪 Key Learning Outcomes
+
+* Implemented neural network training **from scratch in C++**
+* Understood backpropagation at a low level (tensor operations, gradients)
+* Applied classical data structures in a real ML pipeline
+* Built a modular system with reusable components (datasets, layers, optimizers)
+
+---
+
+## 🚀 Possible Extensions
+
+* LeakyReLU / ELU to mitigate dead neuron problem
+* CNN layers for computer vision tasks
+* GPU acceleration (CUDA / OpenCL)
+* Visualization tools (loss curves, decision boundaries)
+* Serialization improvements (portable model format)
+
+---
+
+## ⭐ Highlights
+
+* End-to-end ML pipeline without frameworks (no PyTorch / TensorFlow)
+* Combines **Data Structures + Machine Learning**
+* Emphasis on **low-level implementation and performance awareness**
+* Clean modular design using interfaces and templates
+
+---
+
