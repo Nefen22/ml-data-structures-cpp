@@ -28,9 +28,15 @@ Tanh::~Tanh() {
 
 xt::xarray<double> Tanh::forward(xt::xarray<double> X) {
     //YOUR CODE IS HERE
+    xt::xarray<double> subX = xt::exp(X);
+    xt::xarray<double> neX = xt::exp(X * -1);
+    xt::xarray<double> reVal =  (subX - neX )/ (subX + neX);
+    if (this->m_trainable) this->m_aCached_Y = reVal;
+    return reVal;
 }
 xt::xarray<double> Tanh::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
+    return DY * (1 - this->m_aCached_Y * this->m_aCached_Y);
 }
 
 string Tanh::get_desc(){

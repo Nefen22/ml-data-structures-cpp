@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/file.cc to edit this template
  */
@@ -32,18 +32,24 @@ void IModel::fit(DataLoader<double, double>* pTrainLoader,
             double_tensor X = batch.getData();
             double_tensor t = batch.getLabel();
             on_begin_step(X.shape()[0]);
+            // Trong vòng lặp train
             
             //(0) Set gradient buffer to zeros
             //YOUR CODE IS HERE
+            this->m_pOptimizer->zero_grad();
             
             //(1) FORWARD-Pass
             //YOUR CODE IS HERE
+            double_tensor Y = this->forward(X);
+            double batch_loss = m_pLossLayer->forward(Y, t);
             
             //(2) BACKWARD-Pass
             //YOUR CODE IS HERE
+            this->backward();
             
             //(3) UPDATE learnable parameters
             //YOUR CODE IS HERE
+            this->m_pOptimizer->step();
             
             //Record the performance for each batch
             ulong_tensor y_true = xt::argmax(t, 1);

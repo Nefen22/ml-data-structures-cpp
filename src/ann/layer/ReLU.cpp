@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
  */
@@ -27,10 +27,22 @@ ReLU::~ReLU() {
 }
 
 xt::xarray<double> ReLU::forward(xt::xarray<double> X) {
-    //YOUR CODE IS HERE
+    // Lưu mask để backward
+    if (this->m_trainable) {
+        this->m_aMask = xt::cast<double>(X > 0);
+    }
+
+    // Tính tỷ lệ neuron chết (dead neurons)
+    double total_elements = static_cast<double>(X.size());
+    double positive_count = xt::sum(this->m_aMask)();
+    double live_ratio = positive_count / total_elements;
+    double dead_ratio = 1.0 - live_ratio;
+
+    return xt::where(X > 0, X, 0.0);
 }
 xt::xarray<double> ReLU::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
+    return this->m_aMask * DY;
 }
 
 string ReLU::get_desc(){

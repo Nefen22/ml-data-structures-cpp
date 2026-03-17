@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
  */
@@ -28,6 +28,8 @@ ClassMetrics::~ClassMetrics() {
 
 void ClassMetrics::reset_metrics(){
     //YOUR CODE IS HERE
+    m_sample_counter = 0;
+    m_metrics = xt::zeros<double>({ NUM_CLASS_METRICS });
 }
 double_tensor ClassMetrics::calculate_metrics(double_tensor y_true, double_tensor y_pred){
     return calc_classifcation_metrics(y_true, y_pred, m_nOutputs);

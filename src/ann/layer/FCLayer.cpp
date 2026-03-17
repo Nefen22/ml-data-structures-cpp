@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
  */
@@ -144,9 +144,19 @@ FCLayer::~FCLayer() {
 
 xt::xarray<double> FCLayer::forward(xt::xarray<double> X) {
     //YOUR CODE IS HERE
+
+    if (m_trainable) this->m_aCached_X = X;
+    xt::xarray < double > sub = xt::linalg::dot(X, xt::transpose(this->m_aWeights));
+    if (this->m_bUse_Bias) return sub + this->m_aBias;
+    return sub;
 }
 xt::xarray<double> FCLayer::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
+    this->m_unSample_Counter = DY.shape()[0];
+    this->m_aGrad_W =
+        xt::linalg::dot(xt::transpose(DY), this->m_aCached_X);
+    if (this->m_bUse_Bias) this->m_aGrad_b = xt::mean(DY, { 0 });
+    return xt::linalg::dot(DY, this->m_aWeights);
 }
 
 int FCLayer::register_params(IParamGroup* ptr_group){

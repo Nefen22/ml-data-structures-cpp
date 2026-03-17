@@ -42,6 +42,7 @@ public:
     bool has_learnable_param(){ return true; };
     LayerType get_type(){ return LayerType::FC; };
 
+
 protected:
     virtual void init_weights();
     

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
  */
@@ -29,9 +29,14 @@ Softmax::~Softmax() {
 
 xt::xarray<double> Softmax::forward(xt::xarray<double> X) {
     //YOUR CODE IS HERE
+    xt::xarray<double> reVal = softmax(X, this->m_nAxis);
+    this->m_aCached_Y = reVal;
+    return reVal;
 }
 xt::xarray<double> Softmax::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
+    xt::xarray <double> ySquare = diag_stack(this->m_aCached_Y);
+    return matmul_on_stack((ySquare - (outer_stack(this->m_aCached_Y, this->m_aCached_Y))), DY);
 }
 
 string Softmax::get_desc(){

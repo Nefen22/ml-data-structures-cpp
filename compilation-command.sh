@@ -13,8 +13,8 @@ echo "################################################"
 echo "# Compilation of the assignment: STARTED #######"
 echo "################################################"
 
-# g++ -std=c++17 -I "$INCLUDE1" -I "$INCLUDE2" -I "$INCLUDE3" -I "$INCLUDE4" -I "$INCLUDE5" $(find $SRC1 -type f -iregex ".*\.cpp") "$SRC2"/*.cpp "$MAIN"  -o program
-g++ -std=c++17 -k$(nproc) -I "$INCLUDE1" -I "$INCLUDE5" -I "$INCLUDE6" -I "$INCLUDE2" "$SRC2"/*.cpp "$MAIN"  -o program
+g++ -std=c++17 -I "$INCLUDE1" -I "$INCLUDE2" -I "$INCLUDE3" -I "$INCLUDE4" -I "$INCLUDE5" $(find $SRC1 -type f -iregex ".*\.cpp") "$SRC2"/*.cpp "$MAIN"  -o program
+#g++ -std=c++17 -k$(nproc) -I "$INCLUDE1" -I "$INCLUDE5" -I "$INCLUDE6" -I "$INCLUDE2" "$SRC2"/*.cpp "$MAIN"  -o program
 
 echo "################################################"
 echo "# Compilation of the assignment: END     #######"

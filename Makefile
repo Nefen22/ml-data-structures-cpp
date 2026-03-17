@@ -29,9 +29,9 @@ all: $(BIN)
 $(BIN): $(OBJs)
 	$(CXX) $(CFLAGS) $(CPPFLAGS) $(OBJs) -o $@ $(LDLIBS)
 
-$(OBJs): $(SRCs)
+$(OBJ)/%.o: $(SRC)/%.cpp
 	$(MKDIR) $(dir $@)
-	$(CXX) $(CFLAGS) $(CPPFLAGS) -c $(subst $(OBJ), $(SRC), $(@:.o=.cpp)) -o $@
+	$(CXX) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 # Here: repeat here for other other source codes
 
 # Clean rule to remove generated files

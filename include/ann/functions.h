@@ -44,7 +44,7 @@ xt::xarray<double> onehot_enc(xt::xarray<unsigned long> x, int nclasses);
 xt::xarray<ulong> confusion_matrix(xt::xarray<ulong> y_true, xt::xarray<ulong> y_pred,  int nclasses);
 xt::xarray<ulong> class_count(xt::xarray<ulong> confusion);
 double_tensor calc_classifcation_metrics(ulong_tensor y_true, ulong_tensor y_pred, int nclasses);
-
+xt::xarray<double>  generalized_outer(xt::xarray<double>& A, xt::xarray<double>& B);
 
 
 int stringHash(string& str, int size);

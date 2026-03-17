@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
  */
@@ -24,9 +24,27 @@ ILossLayer(orig){
 CrossEntropy::~CrossEntropy() {
 }
 
-double CrossEntropy::forward(xt::xarray<double> X, xt::xarray<double> t){
-    //YOUR CODE IS HERE
+double CrossEntropy::forward(xt::xarray<double> X, xt::xarray<double> t) {
+    const double EPS = 1e-7;
+
+    // cache for backward
+    m_aCached_Ypred = X;
+    m_aYtarget = t;
+
+    int N = X.shape()[0];
+
+    xt::xarray<double> logY = xt::log(X + EPS);
+    double loss = -xt::sum(t * logY)() / N;
+
+    return loss;
 }
 xt::xarray<double> CrossEntropy::backward() {
-    //YOUR CODE IS HERE
+    const double EPS = 1e-7;
+
+    int N = m_aCached_Ypred.shape()[0];
+
+    xt::xarray<double> DY =
+        -(m_aYtarget / (m_aCached_Ypred + EPS)) / N;
+
+    return DY;
 }

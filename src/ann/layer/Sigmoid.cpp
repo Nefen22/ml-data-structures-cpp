@@ -27,9 +27,13 @@ Sigmoid::~Sigmoid() {
 }
 xt::xarray<double> Sigmoid::forward(xt::xarray<double> X) {
     //YOUR CODE IS HERE
+    xt::xarray<double> reVal = 1 / (1 + xt::exp(X * -1));
+    if (this->m_trainable) this->m_aCached_Y = reVal;
+    return reVal;
 }
 xt::xarray<double> Sigmoid::backward(xt::xarray<double> DY) {
     //YOUR CODE IS HERE
+    return DY * this->m_aCached_Y * (1 - this->m_aCached_Y);
 }
 
 string Sigmoid::get_desc(){

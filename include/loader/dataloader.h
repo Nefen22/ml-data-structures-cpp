@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/file.h to edit this template
  */
@@ -81,20 +81,36 @@ public:
         }
 
         Batch<DType, LType> subLoad(int cur, int lim) {
-            xt::xarray<DType> reData;
-            xt::xarray<LType> reLabel;
-            bool first = true;
-            for (int i = cur; i < lim; i++) {
-                DataLabel<DType, LType> curData = this->pLoader->ptr_dataset->getitem(this->pLoader->item_indices[i]);
-                if (first) {
-                    reData = xt::xarray<DType>(xt::expand_dims(curData.getData(), 0));
-                    reLabel = xt::xarray<LType>(xt::expand_dims(curData.getLabel(), 0));
-                    first = false;
-                    continue;
-                }
-                reData = xt::xarray<DType>(xt::concatenate(xt::xtuple(reData, xt::expand_dims(curData.getData(), 0)), 0));
-                reLabel = xt::xarray<LType>(xt::concatenate(xt::xtuple(reLabel,  xt::expand_dims(curData.getLabel(), 0)), 0));
+            int actual_size = lim - cur;
+            if (actual_size <= 0) {
+                // return empty batch hoặc throw tùy assignment
+                return Batch<DType, LType>(xt::xarray<DType>{}, xt::xarray<LType>{});
             }
+
+            // Lấy shape của 1 mẫu
+            auto sample = pLoader->ptr_dataset->getitem(pLoader->item_indices[cur]);
+            auto data_shape_1 = sample.getData().shape();
+            auto label_shape_1 = sample.getLabel().shape();
+
+            // Tạo tensor lớn với batch dim
+            xt::svector<size_t> batch_data_shape = data_shape_1;
+            batch_data_shape.insert(batch_data_shape.begin(), actual_size);
+
+            xt::svector<size_t> batch_label_shape = label_shape_1;
+            batch_label_shape.insert(batch_label_shape.begin(), actual_size);
+
+            xt::xarray<DType> reData = xt::empty<DType>(batch_data_shape);
+            xt::xarray<LType> reLabel = xt::empty<LType>(batch_label_shape);
+
+            for (int b = 0; b < actual_size; ++b) {
+                int idx = pLoader->item_indices[cur + b];
+                auto item = pLoader->ptr_dataset->getitem(idx);
+
+                // Copy vào slice
+                xt::view(reData, b) = item.getData();
+                xt::view(reLabel, b) = item.getLabel();
+            }
+
             return Batch<DType, LType>(reData, reLabel);
         }
 
@@ -132,7 +148,7 @@ public:
     Iterator begin() {
         //YOUR CODE IS HERE
         if (shuffle) {
-            if (m_seed >= 0) xt::random::seed(m_seed);
+            if (m_seed > -1) xt::random::seed(m_seed);
             xt::random::shuffle(item_indices);
         }
         return Iterator(this, 0);

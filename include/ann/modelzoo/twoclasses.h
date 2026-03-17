@@ -56,7 +56,7 @@ void twoclasses_classification(){
     
     //train + eval
     model.compile(&optim, &loss, &metrics);
-    model.fit(&train_loader, &valid_loader, 1000);
+    model.fit(&train_loader, &valid_loader, 100);
     string base_path = "./models";
     model.save(base_path + "/" + "2c-classification-1");
     double_tensor eval_rs = model.evaluate(&test_loader);

@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/file.h to edit this template
  */
@@ -37,7 +37,7 @@ void threeclasses_classification(){
     DataLoader<double, double> train_loader(train_ds, 50, true, false);
     DataLoader<double, double> valid_loader(valid_ds, 50, false, false);
     DataLoader<double, double> test_loader(test_ds, 50, false, false);
-    
+
     int nClasses = 3;
     ILayer* layers[] = {
                     new FCLayer(2, 50, true),
@@ -50,7 +50,7 @@ void threeclasses_classification(){
     MLPClassifier model("./config.txt", "3c-classification", layers, sizeof(layers)/sizeof(ILayer*));
     
     
-    Adam optim(1e-3, 0.9, 0.99);
+    SGD optim(2e-3);
     CrossEntropy loss;
     ClassMetrics metrics(nClasses);
     

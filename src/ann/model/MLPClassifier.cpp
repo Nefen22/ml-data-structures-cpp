@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
  */
@@ -60,12 +60,13 @@ double_tensor MLPClassifier::predict(double_tensor X, bool make_decision){
     //DO the inference
     
     //YOUR CODE IS HERE
+    double_tensor Y = forward(X);
     
     //RESTORE the previous mode
     this->set_working_mode(old_mode);
     
     //RETURN
-    if(make_decision) return Y;
+    if(!make_decision) return Y;
     else return xt::argmax(Y, -1);
 }
 
@@ -89,13 +90,22 @@ double_tensor MLPClassifier::predict(
     unsigned long long nsamples = 0;
     for(auto batch: *pLoader){
         //YOUR CODE IS HERE
+        if (first_batch) {
+            results = this->forward(batch.getData());
+            first_batch = false;
+        }
+        else {
+            results = xt::concatenate(xt::xtuple(results, this->forward(batch.getData())), 0);
+        }
+        nsamples += batch.getData().shape()[0];
+        batch_idx++;
     }
     cout << "Prediction: End" << endl;
     
     //restore the old mode
     this->set_working_mode(old_mode);
     
-    if(make_decision) return results;
+    if(!make_decision) return results;
     else return xt::argmax(results, -1);
 }
 
@@ -108,10 +118,18 @@ double_tensor MLPClassifier::evaluate(DataLoader<double, double>* pLoader){
     meter.reset_metrics();
     
     //YOUR CODE IS HERE
+    for (auto batch : *pLoader) {
+        auto Y = this->predict(batch.getData(), false);
+
+        ulong_tensor y_true = xt::argmax(batch.getLabel(), 1);
+        ulong_tensor y_pred = xt::argmax(Y, 1);
+
+        meter.accumulate(y_true, y_pred);
+    }
 
     //
     this->set_working_mode(old_mode);
-    return metrics;
+    return meter.get_metrics();
 }
 //for the inference mode:end
 
@@ -145,9 +163,29 @@ void MLPClassifier::set_working_mode(bool trainable){
 //protected: for the training mode: begin
 double_tensor MLPClassifier::forward(double_tensor X){
     //YOUR CODE IS HERE
+    double_tensor nextX = X;
+    for (auto& layer : this->m_layers) {
+        if (xt::any(xt::isnan(nextX))) {
+            cout << "NaN at forward: " << layer->getname() << endl;
+            cout << xt::view(nextX, 0) << " " << layer->getname() << endl;
+
+            exit(1);
+        }
+        nextX = layer->forward(nextX);
+    }
+    return nextX;
 }
 void MLPClassifier::backward(){
     //YOUR CODE IS HERE
+    double_tensor DY = this->m_pLossLayer->backward();
+    for (auto it = m_layers.bbegin(); it != m_layers.bend(); ++it) {
+        if (xt::any(xt::isnan(DY))) {
+            cout << xt::view(DY, 0) << " " << (*it)->getname() << endl;
+            cout << "NaN at forward: " << (*it)->getname() << endl;
+            exit(1);
+        }
+        DY = (*it)->backward(DY);
+    }
 }
 //protected: for the training mode: end
 
