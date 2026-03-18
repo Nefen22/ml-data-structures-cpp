@@ -61,14 +61,14 @@ def gen_3c(N):
 # =========================
 def generate_all():
     # 2-class
-    save_dataset("datasets/2c-classification/2c_train.npy", gen_2c(300))
-    save_dataset("datasets/2c-classification/2c_valid.npy", gen_2c(100))
-    save_dataset("datasets/2c-classification/2c_test.npy",  gen_2c(100))
+    save_dataset("datasets/2c-classification/2c_train.npy", gen_2c(800))
+    save_dataset("datasets/2c-classification/2c_valid.npy", gen_2c(300))
+    save_dataset("datasets/2c-classification/2c_test.npy",  gen_2c(300))
 
     # 3-class
-    save_dataset("datasets/3c-classification/3c_train.npy", gen_3c(300))
-    save_dataset("datasets/3c-classification/3c_valid.npy", gen_3c(120))
-    save_dataset("datasets/3c-classification/3c_test.npy",  gen_3c(120))
+    save_dataset("datasets/3c-classification/3c_train.npy", gen_3c(800))
+    save_dataset("datasets/3c-classification/3c_valid.npy", gen_3c(300))
+    save_dataset("datasets/3c-classification/3c_test.npy",  gen_3c(300))
 
 
 if __name__ == "__main__":

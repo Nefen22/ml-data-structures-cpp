@@ -69,6 +69,7 @@ void twoclasses_classification(){
     double_tensor eval_rs1 = pretrained1.evaluate(&test_loader);
     cout << "Load + Eval a pretrained model : " << endl;
     cout << eval_rs1 << endl;
+    delete pMap;
 }
 
 
