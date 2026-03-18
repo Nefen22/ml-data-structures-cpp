@@ -27,16 +27,12 @@ ReLU::~ReLU() {
 }
 
 xt::xarray<double> ReLU::forward(xt::xarray<double> X) {
-    // Lưu mask để backward
+
     if (this->m_trainable) {
         this->m_aMask = xt::cast<double>(X > 0);
     }
 
-    // Tính tỷ lệ neuron chết (dead neurons)
-    double total_elements = static_cast<double>(X.size());
-    double positive_count = xt::sum(this->m_aMask)();
-    double live_ratio = positive_count / total_elements;
-    double dead_ratio = 1.0 - live_ratio;
+
 
     return xt::where(X > 0, X, 0.0);
 }

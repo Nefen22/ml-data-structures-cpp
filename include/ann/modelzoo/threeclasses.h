@@ -50,13 +50,13 @@ void threeclasses_classification(){
     MLPClassifier model("./config.txt", "3c-classification", layers, sizeof(layers)/sizeof(ILayer*));
     
     
-    SGD optim(2e-3);
+    SGD optim(1e-3);
     CrossEntropy loss;
     ClassMetrics metrics(nClasses);
     
     //train + eval
     model.compile(&optim, &loss, &metrics);
-    model.fit(&train_loader, &valid_loader, 1000);
+    model.fit(&train_loader, &valid_loader, 10);
     string base_path = "./models";
     model.save(base_path + "/" + "3c-classification-1");
     double_tensor eval_rs = model.evaluate(&test_loader);
@@ -69,6 +69,7 @@ void threeclasses_classification(){
     double_tensor eval_rs1 = pretrained1.evaluate(&test_loader);
     cout << "Load + Eval a pretrained model : " << endl;
     cout << eval_rs1 << endl;
+    delete pMap;
 }
 
 #endif /* THEECLASSES_H */
