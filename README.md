@@ -134,7 +134,7 @@ Shape information is initialized only when needed:
 ```bash
 make -j$(nproc)
 ./program
-📊## Dataset
+📊 Dataset
 
 Generate synthetic datasets:
 
@@ -152,7 +152,7 @@ Each sample:
 
 1 label
 
-📈## Example Output
+📈 Example Output
 Start the training ...
 Epoch 10: loss ~0.8 | acc ~0.88
 Epoch 30: loss ~0.3 | acc ~0.95
@@ -160,7 +160,7 @@ Epoch 40+: acc ~0.96
 
 Evaluation result:
 { accuracy ~0.96 }
-📂## Project Structure
+📂 Project Structure
 .
 ├── include/
 │   ├── list/
@@ -173,7 +173,7 @@ Evaluation result:
 ├── models/
 ├── datasets/
 ├── Makefile
-🧪## Learning Outcomes
+🧪 Learning Outcomes
 
 Implemented a neural network from scratch in C++
 
@@ -185,7 +185,7 @@ Applied classical data structures in a real-world pipeline
 
 Practiced memory-safe programming (validated with Valgrind)
 
-🚀 ## Future Improvements
+🚀 Future Improvements
 
 Multi-threaded DataLoader (prefetching)
 
@@ -197,7 +197,7 @@ GPU acceleration (CUDA / OpenCL)
 
 Visualization tools (training curves, decision boundaries)
 
-⭐ ## Highlights
+⭐ Highlights
 
 End-to-end ML pipeline without high-level frameworks
 
