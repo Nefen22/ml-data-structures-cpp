@@ -74,17 +74,29 @@ A custom implementation inspired by PyTorch:
 
 
 Dataset
+
 ↓
+
 DataLoader (batching, shuffle)
+
 ↓
+
 Model (MLP)
+
 ↓
+
 Loss (CrossEntropy)
+
 ↓
+
 Backward Pass
+
 ↓
+
 Optimizer
+
 ↓
+
 Evaluation / Save Model
 
 
