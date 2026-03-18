@@ -1,167 +1,146 @@
-# ml-data-structures-cpp
+# 🚀 ml-data-structures-cpp
 
-A C++ implementation of core data structures and their application to a neural network pipeline, built as part of the **Data Structures & Algorithms** course at HCMUT (2024).
+> A from-scratch implementation of a mini machine learning framework in **modern C++**, combining custom data structures with a full neural network training pipeline.
 
-Implemented a Multi-Layer Perceptron (MLP) training pipeline from scratch in C++, including custom data structures, forward/backward propagation, and dataset handling.
-
----
-
-## What I Implemented
-
-### Data Structures
-- **XArrayList** — generic dynamic array with x2 amortized resize strategy
-- **DLinkedList** — generic doubly linked list; used for bidirectional layer traversal in the neural network
-- **Stack, Queue** — built on top of the list structures
-- **BST, AVL Tree** — binary search tree with AVL balancing
-- **Graph** (directed/undirected) — with Topological Sort
-- **Heap** — priority queue implementation
-- **Hash Map (xMap)** — hash table with chaining
-- **Sorting algorithms** — Bubble, Quick, Heap, Shell, Insertion, Selection
-
-### Neural Network Pipeline
-- **TensorDataset** — wraps data and label tensors with shape metadata
-- **DataLoader** — batched data iteration with configurable shuffle and train/val split
-- **FCLayer** — fully connected layer with forward and backward pass
-- **ReLU, Sigmoid, Tanh, Softmax** — activation layers with forward and backward pass
-- **CrossEntropy** — loss function
-- **MLPClassifier** — full model using DLinkedList to chain layers; supports forward, backward, training, evaluation, save/load
+Built as part of the **Data Structures & Algorithms course at HCMUT (2024)**, this project focuses on **system design, memory efficiency, and low-level ML implementation** without relying on high-level frameworks like PyTorch or TensorFlow.
 
 ---
 
-## What Was Provided
-- All header interfaces (`IList`, `ILayer`, `IModel`, `IOptimizer`, etc.)
-- Optimizer implementations (SGD, Adam, Adagrad)
-- Tensor library (xtensor)
-- Formatting library (fmtlib)
+## 🎯 Overview
+
+This project reconstructs a complete ML pipeline in C++, including:
+
+- Custom data structures (lists, trees, hash maps, graphs)
+- A mini neural network framework (MLP)
+- Data loading system with batching and shuffling
+- Forward & backward propagation (backpropagation)
+- Model training, evaluation, and persistence
+
+👉 The goal is to bridge **Data Structures ↔ Machine Learning Systems** in a practical implementation.
 
 ---
 
-## Key Design Decisions
+## ⚡ Core Features
 
-**DLinkedList for neural network layers**
-Each layer is stored as a node in a doubly linked list. This allows natural forward pass (head → tail) and backward pass (tail → head) traversal without reversing the structure.
+### 🧠 Neural Network Pipeline (Main Focus)
 
-**XArrayList with x2 resize**
-When capacity is exceeded, the internal array doubles in size. This gives amortized O(1) append performance — inserting N elements total costs O(N) rather than O(N²).
-
-**Generic templates**
-Both list structures use C++ templates, allowing reuse across different data types: `XArrayList<double>` for tensor data, `DLinkedList<ILayer*>` for model layers, `Dataset<DType, LType>` for typed data/label pairs.
-
----
-
-## Build & Run
-
-```bash
-# Requires g++, C++17
-chmod +x compilation-command.sh
-./compilation-command.sh
-
-# Run
-./program
-```
-
-Or using Makefile:
-
-```bash
-make
-./program
-```
+- **MLPClassifier** — fully connected neural network
+- **Forward & Backward propagation** implemented from scratch
+- **Activation layers**: ReLU, Sigmoid, Tanh, Softmax
+- **Loss function**: CrossEntropy
+- **Training loop** with evaluation support
+- **Model save/load** for reproducibility
 
 ---
 
-## Results
+### ⚡ DataLoader (Key Highlight)
 
-Trained and evaluated on 2-class and 3-class classification tasks. Model checkpoints saved under `models/`.
+A custom implementation inspired by PyTorch:
 
-| Task | Layers | Optimizer |
-|---|---|---|
-| 2-class classification | FC → ReLU → FC → ReLU → FC → Softmax | SGD / Adam |
-| 3-class classification | FC → ReLU → FC → ReLU → FC → Softmax | SGD / Adam |
+- Iterator-based design (`for (auto batch : loader)`)
+- Mini-batch loading
+- Shuffle with reproducible seed
+- Lazy shape initialization (reduces unnecessary dataset access)
+- `drop_last` support for consistent batch sizes
 
----
-
-## Project Structure
-
-```
-.
-├── include/
-│   ├── list/          # XArrayList, DLinkedList interfaces
-│   ├── ann/           # Neural network layer, model, optimizer headers
-│   ├── loader/        # Dataset, DataLoader
-│   ├── tensor/        # xtensor library
-│   └── ...
-├── src/
-│   ├── ann/           # Layer, model, optimizer implementations
-│   └── program.cpp    # Entry point
-├── models/            # Saved model checkpoints
-├── Makefile
-└── compilation-command.sh
-```
-
-## 📊 Dataset
-
-The project includes synthetic datasets for classification tasks.
-
-You can generate new datasets using:
-
-```bash
-python gendata.py
-```
-
-This will create datasets under:
-
-```
-datasets/
-├── 2c-classification/
-│   ├── 2c_train.npy
-│   ├── 2c_valid.npy
-│   └── 2c_test.npy
-├── 3c-classification/
-│   ├── 3c_train.npy
-│   ├── 3c_valid.npy
-│   └── 3c_test.npy
-```
-
-Each sample consists of:
-
-* 2 input features `(x, y)`
-* 1 label (class index)
+👉 Demonstrates understanding of **data pipeline design in ML systems**
 
 ---
 
-## ▶️ Entry Point
+### 🔢 Tensor Computation
 
-The main entry point is:
-
-```
-src/program.cpp
-```
-
-This file:
-
-* Loads datasets via `DSFactory`
-* Builds the MLP model
-* Trains the model
-* Evaluates performance on validation/test sets
-* Saves trained models to `models/`
+- Built on top of **xtensor** (NumPy-like library for C++)
+- Supports multi-dimensional arrays and vectorized operations
+- Enables efficient numerical computation
 
 ---
 
-## ⚡ Build Optimization
+### 🧩 Supporting Data Structures (Built from Scratch)
 
-The project supports parallel compilation using `make`.
+- **XArrayList** — dynamic array with amortized O(1) append
+- **DLinkedList** — used to store and traverse NN layers
+- **Stack / Queue**
+- **BST / AVL Tree**
+- **Graph** (with Topological Sort)
+- **Heap (Priority Queue)**
+- **Hash Map (xMap)**
+- **Sorting algorithms** — Quick, Heap, Shell, etc.
+
+👉 These structures are integrated into the ML pipeline, not just standalone implementations.
+
+---
+
+## 🏗️ System Architecture
+
+
+Dataset
+↓
+DataLoader (batching, shuffle)
+↓
+Model (MLP)
+↓
+Loss (CrossEntropy)
+↓
+Backward Pass
+↓
+Optimizer
+↓
+Evaluation / Save Model
+
+
+---
+
+## 🧠 Key Design Decisions
+
+### DLinkedList for Neural Network Layers
+Each layer is stored as a node in a doubly linked list:
+- Forward pass: head → tail
+- Backward pass: tail → head
+
+→ Simplifies traversal without reversing structures.
+
+---
+
+### Lazy Initialization in DataLoader
+Shape information is initialized only when needed:
+- Avoids unnecessary dataset access
+- Reduces overhead in large datasets
+
+---
+
+### Template-based Generic Design
+- `Dataset<DType, LType>`
+- `XArrayList<T>`
+- `DLinkedList<ILayer*>`
+
+→ Ensures flexibility and reusability.
+
+---
+
+## ▶️ Build & Run
 
 ```bash
 make -j$(nproc)
-```
+./program
+📊## Dataset
 
-This enables multi-core compilation and significantly reduces build time for large projects.
+Generate synthetic datasets:
 
----
+python gendata.py
 
-## 📈 Example Training Output
+Structure:
 
-```
+datasets/
+├── 2c-classification/
+├── 3c-classification/
+
+Each sample:
+
+2 input features (x, y)
+
+1 label
+
+📈## Example Output
 Start the training ...
 Epoch 10: loss ~0.8 | acc ~0.88
 Epoch 30: loss ~0.3 | acc ~0.95
@@ -169,35 +148,49 @@ Epoch 40+: acc ~0.96
 
 Evaluation result:
 { accuracy ~0.96 }
-```
+📂## Project Structure
+.
+├── include/
+│   ├── list/
+│   ├── ann/
+│   ├── loader/
+│   ├── tensor/
+├── src/
+│   ├── ann/
+│   └── program.cpp
+├── models/
+├── datasets/
+├── Makefile
+🧪## Learning Outcomes
 
----
+Implemented a neural network from scratch in C++
 
-## 🧪 Key Learning Outcomes
+Understood backpropagation at a low level (gradients, tensor ops)
 
-* Implemented neural network training **from scratch in C++**
-* Understood backpropagation at a low level (tensor operations, gradients)
-* Applied classical data structures in a real ML pipeline
-* Built a modular system with reusable components (datasets, layers, optimizers)
+Designed a modular ML system with reusable components
 
----
+Applied classical data structures in a real-world pipeline
 
-## 🚀 Possible Extensions
+Practiced memory-safe programming (validated with Valgrind)
 
-* LeakyReLU / ELU to mitigate dead neuron problem
-* CNN layers for computer vision tasks
-* GPU acceleration (CUDA / OpenCL)
-* Visualization tools (loss curves, decision boundaries)
-* Serialization improvements (portable model format)
+🚀 ## Future Improvements
 
----
+Multi-threaded DataLoader (prefetching)
 
-## ⭐ Highlights
+Custom samplers (random, weighted)
 
-* End-to-end ML pipeline without frameworks (no PyTorch / TensorFlow)
-* Combines **Data Structures + Machine Learning**
-* Emphasis on **low-level implementation and performance awareness**
-* Clean modular design using interfaces and templates
+CNN / advanced architectures
 
----
+GPU acceleration (CUDA / OpenCL)
 
+Visualization tools (training curves, decision boundaries)
+
+⭐ ## Highlights
+
+End-to-end ML pipeline without high-level frameworks
+
+Strong combination of Data Structures + Machine Learning
+
+Emphasis on system design & low-level implementation
+
+Clean architecture using templates and interfaces
