@@ -7,5 +7,5 @@ program
 *.vsidx
 *.opendb
 *.bin
-.datasets/
-.obj/
+datasets/
+obj/
